@@ -42,7 +42,7 @@ webrules = {
                 Graphics3D :> (ExportString[#, "SVG"] &@*Graphics3D)
            };
 
-SetOptions[WSPEngine, opts___] ^:= With[{o = List[opts] // Association},
+SetOptions[WSPEngine, opts___] ^:= With[{o = List[{opts}//Flatten] // Association},
     If[KeyExistsQ[o, "Cache"], 
         SetCache[o["Cache"]];
     ];
