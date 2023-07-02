@@ -44,11 +44,11 @@ webrules = {
 
 SetOptions[WSPEngine, opts___] ^:= With[{o = List[opts] // Association},
     If[KeyExistsQ[o, "Cache"], 
-        SetCache[opts["Cache"]];
+        SetCache[o["Cache"]];
     ];
 
     If[KeyExistsQ[o, "ExpressionReplacements"],
-        webrules = opts["ExpressionReplacements"];
+        webrules = o["ExpressionReplacements"];
     ];
 ]
 
