@@ -1,3 +1,5 @@
+(* ::Package:: *)
+
 BeginPackage["JerryI`WSP`"]
 
 
@@ -42,7 +44,7 @@ webrules = {
                 Graphics3D :> (ExportString[#, "SVG"] &@*Graphics3D)
            };
 
-SetOptions[WSPEngine, opts___] ^:= With[{o = List[{opts}//Flatten] // Association},
+WSPEngine /: SetOptions[WSPEngine, opts___] := With[{o = List[{opts}//Flatten] // Association},
     If[KeyExistsQ[o, "Cache"], 
         SetCache[o["Cache"]];
     ];
@@ -63,7 +65,7 @@ findComponent[path_] := If[DirectoryQ[path], FileNameJoin[{path, "index.wsp"}], 
 URLPathToFileName[urlPath_String] := 
 FileNameJoin[FileNameSplit[StringTrim[urlPath, "/"]]]; 
 
-LoadPage[p_, vars_:{}, OptionsPattern[]]:=
+LoadPage[p_, vars_: {}, OptionsPattern[]]:=
     Block[vars,
         If[StringQ[Global`$WSPPublic],
             With[{path = FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}]},
@@ -77,6 +79,8 @@ LoadPage[p_, vars_:{}, OptionsPattern[]]:=
             ]
         ]
     ];
+   
+LoadPage[p_, opts: OptionsPattern[]] := LoadPage[p, {}, opts]
 
 Options[LoadPage] = {"Base" -> ""};
 
