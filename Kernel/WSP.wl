@@ -80,7 +80,7 @@ LoadPage[p_, vars_: {}, OptionsPattern[]]:=
         ]
     ];
    
-LoadPage[p_, opts: OptionsPattern[]] := LoadPage[p, {}, opts]
+(*LoadPage[p_, opts_: OptionsPattern[]] := LoadPage[p, {}, opts]*)
 
 Options[LoadPage] = {"Base" -> ""};
 
