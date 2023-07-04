@@ -1,6 +1,12 @@
 # WolframScript Pages
 Hypertext preprocessor (template engine) built on top of Wolfram Kernel
 
+## Official Wolfram Paclet Page
+[Link](https://resources.wolframcloud.com/PacletRepository/resources/JerryI/WSP/)
+```mathematica
+PacletInstall["JerryI/WSP"]
+```
+
 > See more examples @ [TinyWeb](https://github.com/JerryI/tinyweb-mathematica)
 
 Imagine PHP or JSP, but using Wolfram Language. Easy to use, feels like plain HTML

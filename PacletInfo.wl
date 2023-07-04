@@ -17,7 +17,7 @@ PacletObject[
         "Context" -> {{"JerryI`WSP`", "WSP.wl"}},
         "Symbols" -> {}
       },
-      {"Documentation", "Language" -> "English"},
+ 
       {
         "Asset",
         "Assets" -> {

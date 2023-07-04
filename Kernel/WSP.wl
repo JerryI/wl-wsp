@@ -18,6 +18,9 @@ LoadString::usage =
 WSPEngine::usage = 
 "SetOptions[WSPEngine, \"Cache\"->False] disables caching. One can set it to True, Automatic or specific interval in a form of a string"
 
+WSPLoad::usage = 
+"Alias for LoadPage"
+
 Begin["`Private`"]
 
 (* smart caching. credits https://github.com/KirillBelovTest *)
@@ -53,6 +56,8 @@ WSPEngine /: SetOptions[WSPEngine, opts___] := With[{o = List[{opts}//Flatten] /
         webrules = o["ExpressionReplacements"];
     ];
 ]
+
+WSPLoad = LoadPage
 
 SetCache[False] := pcache = Function[x, x]
 SetCache[Automatic] := (pcache = wcache; wcacheInterval = "Minute")
