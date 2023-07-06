@@ -9,22 +9,33 @@ BeginPackage["JerryI`WSP`"]
 
 ClearAll["`*"]
 
+
 LoadPage::usage = 
-"LoadPage[path_String, vars_List, \"Base\"->\"BasePath\"] process a file located at path relative to the BasePath and returns a string. Use vars to provide data to the loading page"
+"LoadPage[path_String, vars_List, \"Base\"->\"BasePath\"] \
+process a file located at path relative to the BasePath and returns a string. \
+Use vars to provide data to the loading page."
+
 
 LoadString::usage = 
-"LoadPage[s_String, vars_List] process a string and returns string. Use vars to provide data to the page"
+"LoadPage[s_String, vars_List] process a string and returns string. \
+Use vars to provide data to the page."
+
 
 WSPEngine::usage = 
-"SetOptions[WSPEngine, \"Cache\"->False] disables caching. One can set it to True, Automatic or specific interval in a form of a string"
+"SetOptions[WSPEngine, \"Cache\"->False] disables caching. \
+One can set it to True, Automatic or specific interval in a form of a string."
+
 
 WSPLoad::usage = 
 "Alias for LoadPage"
 
+
 Begin["`Private`"]
+
 
 (* smart caching. credits https://github.com/KirillBelovTest *)
 SetAttributes[wcache, HoldFirst]
+
 
 wcache[expr_, date_DateObject] := (
 	wcache[expr, {"Date"}] = date; 
@@ -33,19 +44,23 @@ wcache[expr_, date_DateObject] := (
 
 wcacheInterval = "Minute"
 
+
 wcache[expr_, interval_String: "Minute"] := (
 	If[DateObjectQ[wcache[expr, {"Date"}]] && DateObject[Now, interval] != wcache[expr, {"Date"}], 
 		wcache[expr, wcache[expr, {"Date"}]] =.]; 
 	wcache[expr, DateObject[Now, interval]]
 );
 
+
 pcache = wcache;
+
 
 (*replacement for web objects*)
 webrules = {
-                Graphics :> (ExportString[#, "SVG"] &@*Graphics),
-                Graphics3D :> (ExportString[#, "SVG"] &@*Graphics3D)
-           };
+    Graphics :> (ExportString[#, "SVG"] &@*Graphics),
+    Graphics3D :> (ExportString[#, "SVG"] &@*Graphics3D)
+};
+
 
 WSPEngine /: SetOptions[WSPEngine, opts___] := With[{o = List[{opts}//Flatten] // Association},
     If[KeyExistsQ[o, "Cache"], 
@@ -84,18 +99,23 @@ LoadPage[p_, vars_: {}, OptionsPattern[]]:=
             ]
         ]
     ];
-   
+
+
 (*LoadPage[p_, opts_: OptionsPattern[]] := LoadPage[p, {}, opts]*)
 
+
 Options[LoadPage] = {"Base" -> ""};
+
 
 LoadString[p_, vars_:{}]:=
     Block[vars,
         Process@AST[p, {}, "Simple"]
     ];    
 
+
 SetAttributes[LoadPage, HoldRest];
 SetAttributes[LoadString, HoldRest];
+
 
 StringFix[str_]:=StringReplace[str,Uncompress["1:eJxTTMoPSmNiYGAoZgESQaU5qcGMQIYSmFQHAFYsBK0="]];
 StringUnfix[str_]:=StringReplace[str,Uncompress["1:eJxTTMoPSmNiYGAoZgESQaU5qcGMQIY6mFQCAFZKBK0="]];
@@ -111,14 +131,8 @@ AST[s_, init_ : {}, "Simple"] := Module[
     length = StringLength[s];
 
     (*like in C style, probably it will be slower*)
-    Do[
-        If[StringTake[s, {i,i+4}] == "<?wsp",
-            text = StringTake[s, i-1];
-            rest = StringDrop[s, i+4];
-            Break[];
-        ]
-        , {i, length-4}    
-    ];
+    text = StringExtract[s, "<?wsp" -> 1]; 
+    rest = StringDrop[s, StringLength[text] + 5];
 
     (*pure HTML text*)
     If[TrueQ[text == Null],
@@ -127,8 +141,6 @@ AST[s_, init_ : {}, "Simple"] := Module[
 
     (*text = StringTrim[text];*)
     code = {code, "HTML" -> text};
-
-    
 
     (*extract the WF expression*)
     exp = Null;
@@ -172,6 +184,7 @@ AST[s_, init_ : {}, "Simple"] := Module[
     ]
 ]
 
+
 AST[s_, init_ : {}, "Module"] := Module[
 {code = <||>, body = "", rest = "", text = "", c = "", exp = "", bra = 0, depth = 0, substream, subsubstream, tail="", head="", length},
 
@@ -208,7 +221,9 @@ AST[s_, init_ : {}, "Module"] := Module[
     code
 ]
 
+
 (* a pain in a neck that we have to safely escape quotes by replacing them via differnet symbols *)
+
 
 Parse[x_] := 
   StringJoin[x["HEAD"] ,
