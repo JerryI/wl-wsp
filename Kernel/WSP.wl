@@ -131,8 +131,18 @@ AST[s_, init_ : {}, "Simple"] := Module[
     length = StringLength[s];
 
     (*like in C style, probably it will be slower*)
-    text = StringExtract[s, "<?wsp" -> 1]; 
-    rest = StringDrop[s, StringLength[text] + 5];
+
+    Do[
+         If[StringTake[s, {i,i+4}] == "<?wsp",
+             text = StringTake[s, i-1];
+             rest = StringDrop[s, i+4];
+             Break[];
+         ]
+         , {i, length-4}    
+    ];
+
+    (*text = StringExtract[s, "<?wsp" -> 1]; 
+    rest = StringDrop[s, StringLength[text] + 5];*)
 
     (*pure HTML text*)
     If[TrueQ[text == Null],
