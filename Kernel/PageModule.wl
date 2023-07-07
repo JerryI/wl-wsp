@@ -1,4 +1,4 @@
-BeginPackage["JerryI`WSP`PageModule`", {"JerryI`WSP`", "JerryI`Misc`Channels`", "KirillBelov`HTTPHandler`Extensions`"}];
+BeginPackage["JerryI`WSP`PageModule`", {"JerryI`WSP`", "KirillBelov`WebSocketHandler`", "KirillBelov`HTTPHandler`Extensions`"}];
 
 (*
 
@@ -46,7 +46,7 @@ HotReload[uids_, s_:<||>] := Module[{result},
         ]
     ];
 
-    WebSocketChannel[Automatic]["Push", Global`PageModulesUpdate[result] ];
+    WebSocketSend[Global`client, ExportByteArray[Global`PageModulesUpdate[result], "ExpressionJSON"] ];
 ];
 
 End[];
