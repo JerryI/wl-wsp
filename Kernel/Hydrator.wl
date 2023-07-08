@@ -6,7 +6,8 @@ Plants = <||>
 
 Plant[expr_] := With[{id = CreateUUID[]},
     Plants[id] = Global`FrontEndVirtual[{Global`AttachDOM[id], expr}];
-    LoadPage["t/seed.wsp", {Global`uid = id}]
+    $CurrentRequest["Seeds"][id];
+    "<div id=\""<>id<>"\"></div>"
 ]
 
 Grow[expr_] := With[{id = CreateUUID[]},
@@ -16,7 +17,7 @@ Grow[expr_] := With[{id = CreateUUID[]},
 
 SetAttributes[Grow, HoldFirst]
 
-Hydrate[id_String] := With[{cli = client},
+Hydrate[id_String] := With[{cli = Global`client},
     Print[StringTemplate["`` got hydrated via ``"][id, cli]];
     WebSocketSend[cli, ExportByteArray[Plants[id], "ExpressionJSON"]];
     Plants[id] = .;
