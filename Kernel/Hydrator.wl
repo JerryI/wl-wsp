@@ -6,7 +6,7 @@ Plants = <||>
 
 Plant[expr_] := With[{id = CreateUUID[]},
     Plants[id] = Global`FrontEndVirtual[{Global`AttachDOM[id], expr}];
-    $CurrentRequest["Seeds"][id];
+    $CurrentRequest["Seeds"][id] = True;
     "<div id=\""<>id<>"\"></div>"
 ]
 
