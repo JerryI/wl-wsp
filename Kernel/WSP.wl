@@ -93,7 +93,7 @@ LoadPage[p_, vars_: {}, OptionsPattern[]]:=
             ]
         ,
             Block[{Global`$WSPPublic = OptionValue["Base"]},
-                With[{path = FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}]},
+                With[{path =If[StringLength[Global`$WSPPublic] > 0, FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}], URLPathToFileName[p] ]  },
                     Process@(pcache[ With[{stream = Import[path // findComponent, "String"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
                 ]            
             ]
