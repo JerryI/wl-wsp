@@ -89,12 +89,12 @@ LoadPage[p_, vars_: {}, OptionsPattern[]]:=
     Block[vars,
         If[StringQ[Global`$WSPPublic],
             With[{path = FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}]},
-                Process@(pcache[ With[{stream = Import[path // findComponent, "String"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
+                Process@(pcache[ With[{stream = Import[path // findComponent, "Text"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
             ]
         ,
             Block[{Global`$WSPPublic = OptionValue["Base"]},
                 With[{path =If[StringLength[Global`$WSPPublic] > 0, FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}], URLPathToFileName[p] ]  },
-                    Process@(pcache[ With[{stream = Import[path // findComponent, "String"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
+                    Process@(pcache[ With[{stream = Import[path // findComponent, "Text"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
                 ]            
             ]
         ]

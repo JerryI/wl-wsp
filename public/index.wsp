@@ -1,6 +1,6 @@
 <p><?wsp Now ?></p>
 <br>
-<ul>
+<ul>Бугага
     <?wsp Table[ ?>
         <li> <?wsp i ?> </li>
     <?wsp , {i, 10}] ?>
