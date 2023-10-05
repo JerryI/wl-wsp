@@ -87,7 +87,7 @@ FileNameJoin[FileNameSplit[StringTrim[urlPath, "/"]]];
 
 LoadPage[p_, vars_: {}, OptionsPattern[]]:=
     Block[vars,
-        If[StringQ[Global`$WSPPublic],
+        If[StringQ[Global`$WSPPublic] && StringLength[OptionValue["Base"]] == 0,
             With[{path = FileNameJoin[{Global`$WSPPublic, URLPathToFileName[p]}]},
                 Process@(pcache[ With[{stream = Import[path // findComponent, "Text"]}, AST[stream, {}, "Simple"] ], wcacheInterval ])
             ]
