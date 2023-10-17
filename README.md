@@ -1,6 +1,8 @@
 # WolframScript Pages
 Hypertext preprocessor (template engine) built on top of Wolfram Kernel
 
+2023 update! __please consider to use a successor of WSP -__ [__Wolfam Language XML__](https://github.com/JerryI/wl-wlx)
+
 ## Official Wolfram Paclet Page
 [Link](https://resources.wolframcloud.com/PacletRepository/resources/JerryI/WSP/)
 ```mathematica
